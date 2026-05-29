@@ -283,6 +283,60 @@
     #completion-banner.visible { display: block; }
     #completion-banner h2 { font-size: 18px; margin-bottom: 4px; }
     #completion-banner p { font-size: 13px; opacity: 0.9; }
+  .checkbox-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .cb-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+  }
+  .cb-name {
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    line-height: 1;
+  }
+  .cb-label.cb-ai .cb-name { color: #e07b00; }
+  .cb-label.cb-ai.ai-done .cb-name { color: #e07b00; }
+
+  .step-checkbox-ai {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #f0c070;
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: #fff;
+    position: relative;
+    cursor: not-allowed;
+  }
+  .step-checkbox-ai:checked {
+    background: #f0a000;
+    border-color: #f0a000;
+  }
+  .step-checkbox-ai:checked::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 6px;
+    width: 6px; height: 10px;
+    border: 2px solid #fff;
+    border-top: none; border-left: none;
+    transform: rotate(40deg);
+  }
+  .ai-note {
+    font-size: 11px;
+    color: #e07b00;
+    margin-top: 3px;
+    display: block;
+    font-style: italic;
+  }
   </style>
 </head>
 <body>
@@ -298,7 +352,8 @@
     </svg>
     <div id="progress-text">
       <span class="count" id="count-done">0</span>
-      <span>/ <span id="count-total">49</span></span>
+      <span id="count-label">/ <span id="count-total">49</span></span>
+      <span id="ai-count" style="font-size:10px;opacity:0.85;display:block;white-space:nowrap;">AI: <span id="count-ai">0</span></span>
     </div>
   </div>
   <button id="reset-btn" onclick="confirmReset()">リセット</button>
@@ -347,6 +402,16 @@ function updateProgress() {
   const done = checkedIds.size;
   document.getElementById('count-done').textContent = done;
   document.getElementById('count-total').textContent = total;
+
+  // AI チェック数を集計
+  let aiDone = 0;
+  if (stepsData) {
+    stepsData.sections.forEach(s => {
+      s.steps.forEach(step => { if (step.ai_checked) aiDone++; });
+    });
+  }
+  const aiEl = document.getElementById('count-ai');
+  if (aiEl) aiEl.textContent = aiDone;
 
   const r = 17;
   const circ = 2 * Math.PI * r;
@@ -429,12 +494,24 @@ function renderAll() {
       const isDone = checkedIds.has(step.id);
       const item = document.createElement('div');
       item.className = 'step-item' + (isDone ? ' done' : '');
+      const aiChecked = step.ai_checked || false;
+      const aiNote = step.ai_note || '';
       item.innerHTML = `
-        <input type="checkbox" class="step-checkbox" ${isDone ? 'checked' : ''} aria-label="${step.title}">
+        <div class="checkbox-pair">
+          <label class="cb-label cb-mits" title="Mitsチェック">
+            <input type="checkbox" class="step-checkbox" ${isDone ? 'checked' : ''} aria-label="${step.title}（Mits）">
+            <span class="cb-name">Mits</span>
+          </label>
+          <label class="cb-label cb-ai ${aiChecked ? 'ai-done' : ''}" title="${aiNote || 'AI未判定'}">
+            <input type="checkbox" class="step-checkbox-ai" ${aiChecked ? 'checked' : ''} disabled aria-label="${step.title}（AI）">
+            <span class="cb-name">AI</span>
+          </label>
+        </div>
         <div class="step-body">
           <span class="step-num">STEP ${step.id}</span>
           <span class="step-title">${step.title}</span>
           <span class="step-desc">${step.description}</span>
+          ${aiChecked && aiNote ? `<span class="ai-note">${aiNote}</span>` : ''}
         </div>
       `;
       item.addEventListener('click', (e) => {
