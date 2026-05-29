@@ -542,26 +542,23 @@ function renderAll() {
   updateProgress();
 }
 
+// ===== STEPS DATA（直書き・fetch廃止） =====
+const STEPS_DATA = {"workflow":"UTAGE商品販売設定フロー","totalSteps":49,"sections":[{"id":1,"title":"商品登録","steps":[{"id":1,"title":"「＋商品追加」をクリック","description":"ファネル→商品管理タブ→「＋商品追加」をクリック","ai_checked":false,"ai_note":""},{"id":2,"title":"商品名（管理名称）を入力する","description":"商品名（管理名称）を入力する","ai_checked":true,"ai_note":"AIが命名案・管理名称を生成できるため判定可能"},{"id":3,"title":"「保存」ボタンをクリック","description":"「保存」ボタンをクリック","ai_checked":false,"ai_note":""},{"id":4,"title":"商品詳細へ移動","description":"一覧から作成した商品名をクリックして詳細へ","ai_checked":false,"ai_note":""},{"id":5,"title":"「価格ラインナップ」→「＋追加」をクリック","description":"商品詳細の「価格ラインナップ」→「＋追加」をクリック","ai_checked":false,"ai_note":""},{"id":6,"title":"ラインナップ名称を入力","description":"ラインナップ名称を入力（例：{商品名}）","ai_checked":true,"ai_note":"AIがラインナップ名称の命名案を生成できるため判定可能"},{"id":7,"title":"支払法・決済代行会社・支払回数・金額を設定","description":"支払法・決済代行会社（Stripe等）・支払回数・金額を設定","ai_checked":false,"ai_note":""},{"id":8,"title":"購入後アクションを確認する","description":"購入後アクション（シナリオ・バンドルコース等）を確認する","ai_checked":false,"ai_note":""},{"id":9,"title":"購入後シナリオは空欄のままでOK","description":"購入後シナリオはこの時点では空欄のままでOK","ai_checked":false,"ai_note":""},{"id":10,"title":"「保存」ボタンをクリック","description":"「保存」ボタンをクリック","ai_checked":false,"ai_note":""}]},{"id":2,"title":"シナリオ作成","steps":[{"id":11,"title":"左メニュー「メール・LINE配信」をクリック","description":"左メニュー「メール・LINE配信」をクリック","ai_checked":false,"ai_note":""},{"id":12,"title":"アカウント名を選択","description":"アカウント名を選択","ai_checked":false,"ai_note":""},{"id":13,"title":"シナリオ種別を選択→「シナリオを追加」","description":"ドロップダウンからシナリオ種別を選択（オプトイン等）→「シナリオを追加」","ai_checked":false,"ai_note":""},{"id":14,"title":"シナリオ名を入力","description":"シナリオ名を入力","ai_checked":true,"ai_note":"AIがシナリオ名の命名案を生成できるため判定可能"},{"id":15,"title":"「保存」ボタンをクリック","description":"「保存」ボタンをクリック","ai_checked":false,"ai_note":""},{"id":16,"title":"作成したシナリオをクリック","description":"作成したシナリオをクリック","ai_checked":false,"ai_note":""},{"id":17,"title":"左メニュー「ステップ配信」を選択","description":"左メニュー「ステップ配信」を選択","ai_checked":false,"ai_note":""},{"id":18,"title":"「メール追加」ボタンをクリック","description":"ステップ配信画面で「メール追加」ボタンをクリック","ai_checked":false,"ai_note":""},{"id":19,"title":"「送信者」欄に記入","description":"配信メール設定の「送信者」欄に記入","ai_checked":true,"ai_note":"AIが送信者名の表示テキストを生成できるため判定可能"},{"id":20,"title":"「送信者メールアドレス」を入力","description":"UTAGEに連携したドメインのメールアドレスを「送信者メールアドレス」に入力","ai_checked":true,"ai_note":"AIがtool_ids.md等からドメイン・メールアドレスを確認して提示できるため判定可能"},{"id":21,"title":"メール件名を設定","description":"メール件名を設定（差込文字も使用可）","ai_checked":true,"ai_note":"AIがメール件名の文案を生成できるため判定可能"},{"id":22,"title":"本文をエディタで入力","description":"本文をエディタで入力","ai_checked":true,"ai_note":"AIがメール本文を生成できるため判定可能"},{"id":23,"title":"「保存」ボタンをクリック","description":"「保存」ボタンをクリック","ai_checked":false,"ai_note":""},{"id":24,"title":"「LINEメッセージ追加」ボタンをクリック","description":"「LINEメッセージ追加」ボタンをクリック","ai_checked":false,"ai_note":""},{"id":25,"title":"LINEメッセージ本文を入力","description":"LINEメッセージ本文を入力","ai_checked":true,"ai_note":"AIがLINEメッセージ本文を生成できるため判定可能"},{"id":26,"title":"「保存」ボタンをクリック（稼働中を確認）","description":"「保存」ボタンをクリック（ステータス：稼働中を確認）","ai_checked":false,"ai_note":""}]},{"id":3,"title":"商品×シナリオ連携","steps":[{"id":27,"title":"ファネル→商品管理に戻る","description":"ファネル→商品管理に戻る","ai_checked":false,"ai_note":""},{"id":28,"title":"対象商品をクリック","description":"対象商品をクリック","ai_checked":false,"ai_note":""},{"id":29,"title":"価格ラインナップ名をクリック","description":"価格ラインナップ名をクリック","ai_checked":false,"ai_note":""},{"id":30,"title":"購入後シナリオ・通知メールを設定","description":"購入後シナリオ欄に「商品購入シナリオ」を設定・通知メールも設定","ai_checked":true,"ai_note":"AIがutage_ids_snapshot.mdからシナリオIDを確認して設定値を提示できるため判定可能"},{"id":31,"title":"「保存」ボタンをクリック","description":"「保存」ボタンをクリック","ai_checked":false,"ai_note":""}]},{"id":4,"title":"ファネルと商品を連携","steps":[{"id":32,"title":"対象ファネルを選択","description":"ファネル一覧から対象ファネル（{ファネル名}）を選択","ai_checked":false,"ai_note":""},{"id":33,"title":"ランディングページ側の「編集」をクリック","description":"ランディングページ側の「編集」をクリック","ai_checked":false,"ai_note":""},{"id":34,"title":"決済フォームを挿入したい位置で「＋」をクリック","description":"LP上の決済フォームを挿入したい位置で「＋」をクリック","ai_checked":false,"ai_note":""},{"id":35,"title":"要素リストから「決済フォーム」を追加","description":"要素リストから「決済フォーム」を追加","ai_checked":false,"ai_note":""},{"id":36,"title":"フォーム要素の設定パネルを開く","description":"フォーム要素をクリックして設定パネルを開く","ai_checked":false,"ai_note":""},{"id":37,"title":"商品ドロップダウンから対象商品を選択","description":"商品ドロップダウンから先ほどの商品（{商品名}）を選択","ai_checked":true,"ai_note":"AIがutage_ids_snapshot.mdから商品IDを確認して選択すべき商品を特定できるため判定可能"},{"id":38,"title":"「保存」ボタンをクリック","description":"「保存」ボタンをクリック","ai_checked":false,"ai_note":""},{"id":39,"title":"サンクスページタブに切り替える","description":"サンクスページタブに切り替える","ai_checked":false,"ai_note":""},{"id":40,"title":"サンクスページの「編集」ボタンをクリック","description":"サンクスページの「編集」ボタンをクリック","ai_checked":false,"ai_note":""},{"id":41,"title":"LINE登録を挿入したい位置で「＋」をクリック","description":"サンクスページ上のLINE登録を挿入したい位置で「＋」をクリック","ai_checked":false,"ai_note":""},{"id":42,"title":"要素リストから「友だち追加QRコード」を追加","description":"要素リストから「友だち追加QRコード」を追加","ai_checked":false,"ai_note":""},{"id":43,"title":"QRコード要素の設定パネルを開く","description":"QRコード要素をクリックして設定パネルを開く","ai_checked":false,"ai_note":""},{"id":44,"title":"商品購入シナリオを選択して登録（QR）","description":"商品購入シナリオを選択して登録","ai_checked":true,"ai_note":"AIがutage_ids_snapshot.mdからシナリオIDを確認して設定値を提示できるため判定可能"},{"id":45,"title":"さらに要素を追加する","description":"さらに要素を追加する","ai_checked":false,"ai_note":""},{"id":46,"title":"要素リストから「友だち追加ボタン」を追加","description":"要素リストから「友だち追加ボタン」を追加","ai_checked":false,"ai_note":""},{"id":47,"title":"ボタン要素の設定パネルを開く","description":"ボタン要素をクリックして設定パネルを開く","ai_checked":false,"ai_note":""},{"id":48,"title":"ボタンにも商品購入シナリオを設定して登録","description":"ボタンにも商品購入シナリオを設定して登録","ai_checked":true,"ai_note":"AIがutage_ids_snapshot.mdからシナリオIDを確認して設定値を提示できるため判定可能"},{"id":49,"title":"「保存」ボタンをクリックして完了","description":"「保存」ボタンをクリックして完了","ai_checked":false,"ai_note":""}]}]};
+
 // ===== INIT =====
-async function init() {
+function init() {
   loadProgress();
-  try {
-    const res = await fetch('./steps.json');
-    if (!res.ok) throw new Error('fetch failed');
-    stepsData = await res.json();
-    document.getElementById('loading').remove();
-  } catch (e) {
-    document.getElementById('loading').textContent = 'データの読み込みに失敗しました。ページを再読み込みしてください。';
-    return;
-  }
+  stepsData = STEPS_DATA;
+  // loading要素を削除
+  const loadingEl = document.getElementById('loading');
+  if (loadingEl) loadingEl.remove();
   renderAll();
 }
 
-// ===== SERVICE WORKER =====
+// ===== SERVICE WORKER（無効化・既存SW/キャッシュをunregister） =====
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  });
+  navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+  caches.keys().then(keys => keys.forEach(k => caches.delete(k)));
 }
 
 init();
