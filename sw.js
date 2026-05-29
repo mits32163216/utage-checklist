@@ -1,7 +1,7 @@
 /* UTAGE商品販売設定フロー チェックリスト Service Worker
  * アプリシェルをキャッシュしてオフライン起動を可能にする。
  * チェック状態は localStorage（SWの管轄外）に保存される。 */
-const CACHE = 'utage-checklist-v2';
+const CACHE = 'utage-checklist-v3';
 const SHELL = [
   './',
   './index.html',
